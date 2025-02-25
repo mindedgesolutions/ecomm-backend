@@ -15,4 +15,11 @@ class MasterController extends Controller
 
         return response()->json($categories, Response::HTTP_OK);
     }
+
+    public function childCategories()
+    {
+        $categories = Category::whereNotNull('parent_id')->orderBy('name')->get();
+
+        return response()->json($categories, Response::HTTP_OK);
+    }
 }

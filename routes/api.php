@@ -36,4 +36,5 @@ Route::middleware(['auth:api'])->group(function () {
 
 Route::controller(MasterController::class)->prefix('master')->group(function () {
     Route::get('parent-categories', 'parentCategories');
+    Route::get('child-categories', 'childCategories');
 });
