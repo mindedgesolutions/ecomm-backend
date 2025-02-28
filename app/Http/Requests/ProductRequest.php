@@ -49,8 +49,12 @@ class ProductRequest extends FormRequest
                     $fail('Discount amount must be less than 100%');
                 }
             }],
-            'stock' => 'required|numeric',
-            'images' => ['required', 'array'],
+            'stock' => ['required', 'numeric', function ($attribute, $value, $fail) {
+                if ($value <= 0) {
+                    $fail('Stock must be greater than 0');
+                }
+            }],
+            'images' => $this->id ? ['nullable', 'array'] : ['required', 'array'],
             'images.*' => ['required', 'file', 'image', 'mimes:jpeg,png,jpg', 'max:200'],
         ];
     }

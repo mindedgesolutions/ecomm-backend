@@ -31,8 +31,12 @@ Route::middleware(['auth:api'])->group(function () {
         Route::put('categories/restore/{brand}', [CategoryController::class, 'restore']);
         Route::post('categories/delete/{brand}', [CategoryController::class, 'delete']);
 
+        Route::apiResource('products', ProductController::class)->except(['update']);
+        Route::post('products/update/{product}', [ProductController::class, 'update']);
+        Route::put('products/restore/{product}', [ProductController::class, 'restore']);
+        Route::post('products/delete/{product}', [ProductController::class, 'delete']);
+
         Route::apiResource('customers', CustomerController::class)->except(['store', 'update']);
-        Route::apiResource('products', ProductController::class);
     });
 });
 
