@@ -29,7 +29,11 @@ class ProductRequest extends FormRequest
             'brand' => 'required|exists:brands,id',
             'name' => ['required', 'max:255', 'min:3', function ($attribute, $value, $fail) {
                 $slug = Str::slug($value);
-                $check = Product::whereSlug($slug)->where('id', '!=', $this->id)->first();
+
+                $check = Product::whereSlug($slug)->when($this->id, function ($query) {
+                    $query = $query->where('id', '!=', $this->id);
+                })->first();
+
                 if ($check) {
                     $fail('Product exists');
                 }
@@ -54,7 +58,7 @@ class ProductRequest extends FormRequest
                     $fail('Stock must be greater than 0');
                 }
             }],
-            'images' => $this->id ? ['nullable', 'array'] : ['required', 'array'],
+            'images' => $this->id !== '' ? ['nullable', 'array'] : ['required', 'array'],
             'images.*' => ['required', 'file', 'image', 'mimes:jpeg,png,jpg', 'max:200'],
         ];
     }
